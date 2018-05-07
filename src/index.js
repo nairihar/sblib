@@ -1,3 +1,5 @@
+import Http from './http'
+
 const _privates = new WeakMap()
 
 export default class BSDK {
@@ -11,6 +13,8 @@ export default class BSDK {
     _privates.set(this, _state)
   }
 
+
+  /* getters */
   getInfo() {
     const _state = _privates.get(this)
     return _state.info
@@ -24,5 +28,10 @@ export default class BSDK {
   getVersion() {
     const { version } = this.getInfo()
     return version
+  }
+
+  /* other methods */
+  initHttp(options) {
+    this.http = new Http(options)
   }
 }
