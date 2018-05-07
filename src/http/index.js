@@ -1,10 +1,12 @@
 import Gateway from './Gateway'
-import { defaults } from './configs'
+import { defaults, methods } from './configs'
 
 const _privates = new WeakMap()
 
 export default class Http {
   constructor({ host=defaults.host, port=defaults.port, timeout=defaults.timeout}) {
+    this.methods = methods
+
     const _state = {
       host,
       port,
@@ -30,6 +32,7 @@ export default class Http {
     return gateways
   }
 
+  /* setters */
   setNewGateway({ name, path }) {
     const _state = _privates.get(this)
     const newGateway = new Gateway({
@@ -39,5 +42,11 @@ export default class Http {
     _state.gateways[name] = newGateway
     _privates.set(this, _state)
     return _state.gateways[name]
+  }
+
+  /* other methods */
+  deleteGateway(name) {
+    const _state = _privates.get(this)
+    _state.gateways[name] = null
   }
 }
