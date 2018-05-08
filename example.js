@@ -1,46 +1,39 @@
 import Http, { methods, } from 'sdk-builder/http'
-import SDKBuilder from 'sdk-builder'
 
-const authApi = new Http({
-  name: 'auth',
+const apiHttp = new Http({
+  name: 'api',
   url: 'https://localhost:3000',
 })
+apiHttp.setTimeout(5000)
+apiHttp.setErrorMessages({
+  400: 'Bad request, please don\'t repeat this request again',
+  401: 'You need to authorize at first',
+  403: 'You have not permission for this action',
+  404: 'Nothing found, please check filled data',
+  default: 'Sorry, error happans, please try again',
+  timeout: 'Looks like the server is taking to long to respond, please try again in sometime',
+})
+apiHttp.enableLogs()
 
-authApi.addRoute({
-  path: '/signin',
-  method: methods.POST,
+apiHttp.addRoute({
+  name: 'user',
+  path: '/user',
 })
 
-
-const purchaseApi = new Http({
-  name: 'purchase',
-  url: 'https://localhost:8080',
-})
-
-const mobileGatewayOptions = {
-  name: 'mobile',
-  path: '/mobile',
-}
-purchaseApi.addGateway(mobileGatewayOptions)
-
-const purchaseRouteOptions = {
-  name: 'purchase',
+apiHttp.user.addRoute({
+  name: 'get',
   path: '/',
-  method: methods.POST,
-}
-purchaseApi.mobile.addRoute(purchaseRouteOptions)
-
-const sdk = new SDKBuilder({
-  name: 'mySDK',
-  version: 'v1.0',
+  method: methods.GET,
+})
+apiHttp.user.addRoute({
+  name: 'delete',
+  path: '/',
+  method: methods.DELETE,
 })
 
-sdk.addHttp(authApi, purchaseApi)
-
-sdk.enableLogs()
-
+const { api, } = apiHttp
 async function action() {
-  await sdk.http.auth.purchase.mobile({})
+  await api.user.get({}) // GET:: /user/
+  await api.user.delete({}) // DELETE:: /user/
 }
-
 action()
