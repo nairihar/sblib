@@ -1,17 +1,17 @@
 import assert from 'assert'
 
-import BSDK, { Http } from '../src'
+import BSDK, { Http, } from '../src'
 
 describe('BSDK test, info methods', () => {
   const sdkOptions = {
     name: 'Test SDK',
-    version: 'v1.0'
+    version: 'v1.0',
   }
   const sdk = new BSDK(sdkOptions)
 
   describe('Check SDK', () => {
     it('should return all info about sdk', () => {
-      const { name, version } = sdk.getInfo()
+      const { name, version, } = sdk.getInfo()
       assert.equal(name, sdkOptions.name)
       assert.equal(version, sdkOptions.version)
     })
@@ -31,12 +31,12 @@ describe('BSDK test, info methods', () => {
     const testHttpOptions = {
       host: '127.0.0.1',
       port: 8080,
-      timeout: 3000
+      timeout: 3000,
     }
     const testHttp = new Http(testHttpOptions)
 
     it('should return all info from http layer', () => {
-      const { host, port, timeout } = testHttp.getInfo()
+      const { host, port, timeout, } = testHttp.getInfo()
       assert.equal(host, testHttpOptions.host)
       assert.equal(port, testHttpOptions.port)
       assert.equal(timeout, testHttpOptions.timeout)
