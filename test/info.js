@@ -2,14 +2,14 @@ import assert from 'assert'
 
 import BSDK, { Http } from '../src'
 
-describe('BSDK test', () => {
+describe('BSDK test, info methods', () => {
   const sdkOptions = {
     name: 'Test SDK',
     version: 'v1.0'
   }
   const sdk = new BSDK(sdkOptions)
 
-  describe('Check SDK and check info methods', () => {
+  describe('Check SDK', () => {
     it('should return all info about sdk', () => {
       const { name, version } = sdk.getInfo()
       assert.equal(name, sdkOptions.name)
@@ -27,7 +27,7 @@ describe('BSDK test', () => {
     })
   })
 
-  describe('Create Http layer and check info methods', () => {
+  describe('Create Http layer', () => {
     const testHttpOptions = {
       host: '127.0.0.1',
       port: 8080,

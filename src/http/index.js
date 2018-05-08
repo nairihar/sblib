@@ -41,7 +41,7 @@ export default class Http {
 
   getGateway(name) {
     const { gateways } = _privates.get(this)
-    return gateways[name]
+    return gateways[name] || null
   }
 
   getAllGateways() {
