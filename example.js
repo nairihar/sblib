@@ -39,5 +39,8 @@ sdk.addHttp(authApi, purchaseApi)
 
 sdk.enableLogs()
 
+async function action() {
+  await sdk.http.auth.purchase.mobile({})
+}
 
-
+action()
