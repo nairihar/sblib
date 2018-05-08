@@ -13,11 +13,10 @@ export default class BSDK {
     _privates.set(this, _state)
   }
 
-
   /* getters */
   getInfo() {
-    const _state = _privates.get(this)
-    return _state.info
+    const { info } = _privates.get(this)
+    return info
   }
 
   getName() {

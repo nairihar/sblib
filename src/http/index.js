@@ -27,13 +27,13 @@ export default class Http {
     return gateways[name]
   }
 
-  getAllGateway() {
+  getAllGateways() {
     const { gateways } = _privates.get(this)
     return gateways
   }
 
-  /* setters */
-  setNewGateway({ name, path }) {
+  /* other methods */
+  addGateway({ name, path }) {
     const _state = _privates.get(this)
     const newGateway = new Gateway({
       name,
@@ -42,11 +42,5 @@ export default class Http {
     _state.gateways[name] = newGateway
     _privates.set(this, _state)
     return _state.gateways[name]
-  }
-
-  /* other methods */
-  deleteGateway(name) {
-    const _state = _privates.get(this)
-    _state.gateways[name] = null
   }
 }
