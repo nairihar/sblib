@@ -1,11 +1,12 @@
-import Http, { methods, } from 'sdk-builder/http'
+import HttpRoute, { methods, } from 'sdk-builder/http'
 
-const apiHttp = new Http({
+const api = new HttpRoute({
   name: 'api',
-  url: 'https://localhost:3000',
+  path: '/',
 })
-apiHttp.setTimeout(5000)
-apiHttp.setErrorMessages({
+api.setHost('http://localhost:3000')
+api.setTimeout(5000)
+api.setErrorMessages({
   400: 'Bad request, please don\'t repeat this request again',
   401: 'You need to authorize at first',
   403: 'You have not permission for this action',
@@ -13,27 +14,26 @@ apiHttp.setErrorMessages({
   default: 'Sorry, error happans, please try again',
   timeout: 'Looks like the server is taking to long to respond, please try again in sometime',
 })
-apiHttp.enableLogs()
+api.enableLogs()
 
-apiHttp.addRoute({
+api.addRoute({
   name: 'user',
   path: '/user',
 })
 
-apiHttp.user.addRoute({
+api.user.addRoute({
   name: 'get',
   path: '/',
   method: methods.GET,
 })
-apiHttp.user.addRoute({
+api.user.addRoute({
   name: 'delete',
   path: '/',
   method: methods.DELETE,
 })
 
-const { api, } = apiHttp
 async function action() {
-  await api.user.get({}) // GET:: /user/
-  await api.user.delete({}) // DELETE:: /user/
+  await api.user.get.fetch({}) // GET:: /user/
+  await api.user.delete.fetch({}) // DELETE:: /user/
 }
 action()
