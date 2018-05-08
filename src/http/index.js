@@ -8,15 +8,32 @@ export default class Http {
     this.methods = methods
 
     const _state = {
-      host,
-      port,
-      timeout,
+      info: {
+        host,
+        port,
+        timeout,
+      },
       gateways: {}
     }
     _privates.set(this, _state)
   }
 
   /* getters */
+  getInfo() {
+    const { info } = _privates.get(this)
+    return info
+  }
+
+  getHost() {
+    const { host } = this.getInfo()
+    return host
+  }
+
+  getPort() {
+    const { port } = this.getInfo()
+    return port
+  }
+
   getAllGatewayNames() {
     const { gateways } = _privates.get(this)
     return Object.keys(gateways)

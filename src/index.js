@@ -28,9 +28,7 @@ export default class BSDK {
     const { version } = this.getInfo()
     return version
   }
-
-  /* other methods */
-  initHttp(options) {
-    this.http = new Http(options)
-  }
 }
+
+
+export { Http }
