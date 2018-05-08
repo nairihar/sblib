@@ -11,6 +11,7 @@
     "eol-last": ["error", "always"],
     "indent": [2, 2],
     "no-trailing-spaces": "error",
-    "quotes": ["error", "single"]
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "always"]
   }
 }

@@ -1,12 +1,12 @@
 import assert from 'assert'
 
-import { Http } from '../src'
+import { Http, } from '../src'
 
 describe('Http layer, check gateway and route add get methods', () => {
   const testHttpOptions = {
     host: '127.0.0.1',
     port: 8080,
-    timeout: 3000
+    timeout: 3000,
   }
 
   describe('Check http Gateway get methods which returns empty data', () => {
@@ -31,12 +31,12 @@ describe('Http layer, check gateway and route add get methods', () => {
     const testHttp = new Http(testHttpOptions)
     const gatewayOption = {
       name: 'user',
-      path: '/user'
+      path: '/user',
     }
     const newGateway = testHttp.addGateway(gatewayOption)
 
     it('should return gateway info', () => {
-      const { name, path } = newGateway.getInfo()
+      const { name, path, } = newGateway.getInfo()
       assert.equal(name, gatewayOption.name)
       assert.equal(path, gatewayOption.path)
     })
