@@ -1,5 +1,5 @@
-// not working currently
-import Route, { POST, GET, } from 'sdk-builder/http'
+// currently not working example
+import Route, { GET, } from 'sdk-builder/http'
 
 const routes = {
   default: '/',
@@ -7,10 +7,13 @@ const routes = {
   signup: '/signup',
   user: {
     default: '/user',
+    getById: GET,
+  },
+  users: {
+    default: '/users',
     getAll: {
       default: '/all',
-      getAll: POST,
-      getById: GET,
+      getAll: GET,
     },
   },
 }
@@ -19,12 +22,10 @@ const api = new Route({
   routes,
 })
 
-// default options
 api.setHost('http://localhost:3000')
 api.setTimeout(5000)
 api.setErrorMessages({
-  400: 'Bad request, please don\'t repeat this request again',
-  401: 'You need to authorize at first',
+  // errors for specific status codes
   403: 'You have not permission for this action',
   404: 'Nothing found, please check filled data',
   default: 'Sorry, error happans, please try again',
@@ -32,8 +33,17 @@ api.setErrorMessages({
 })
 api.enableLogs()
 
+// set error messages and timeouts for specific route
+api.user.setErrorMessages({
+  400: 'Bad request, please don\'t repeat this request again',
+  401: 'You need to authorize at first',
+})
+api.user.setTimeout(1000)
+
 async function action() {
-  await api.user.get.fetch({}) // GET:: /user/
-  await api.user.delete.fetch({}) // DELETE:: /user/
+  await api.sigin.fetch({}) // POST:: /signin
+  await api.sigup.fetch({}) // POST:: /signup
+  await api.user.getById.fetch({}) // GET:: /user
+  await api.users.getAll.fetch({}) // GET:: /users/all
 }
 action()
