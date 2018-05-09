@@ -1,2 +1,7 @@
+import * as methods from './methods'
+
 export { default as defaults, } from './defaults'
-export { default as methods, } from './methods'
+
+export {
+  methods,
+}

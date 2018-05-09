@@ -1,43 +1,51 @@
-import { defaults, methods, } from './configs'
+import { defaults, methods, } from '../configs'
 
 const _privates = new WeakMap()
+const addRoute = Symbol('addRoute')
+const setPath = Symbol('setPath')
 
 export default class Route {
-  methods = methods
-
-  constructor({ name, url, path=defaults.path, method=methods.POST, }) {
+  constructor({ name, routes, }) {
     const _state = {
-      info: {
-        name,
-        url: `${url}${path}`,
-        path,
-        method,
-      },
+      name,
+      host: null,
+      method: methods.POST,
+      rotueNames: [],
       timeout: defaults.timeout,
       messages: {},
-      routes: {},
     }
+    if (routes instanceof String) {
+      _state.routes = {}
+      _state.path = routes
+    } else if (routes instanceof Object) {
+      _state.routes = routes
+      _state.path = routes.defaults || defaults.path
+    } else {
+      throw 'Pleae specify correct route address'
+    }
+    this[addRoute]()
     _privates.set(this, _state)
   }
 
   /* getters */
-  getInfo() {
-    const { info, } = _privates.get(this)
-    return info
+  getHost() {
+    const { host, } = _privates.get(this)
+    return host
   }
 
   getUrl() {
-    const { url, } = this.getInfo()
+    const { host, path, } = _privates.get(this)
+    const url = `${host}${path}`
     return url
   }
 
   getPath() {
-    const { path, } = this.getInfo()
+    const { path, } = _privates.get(this)
     return path
   }
 
   getName() {
-    const { name, } = this.getInfo()
+    const { name, } = _privates.get(this)
     return name
   }
 
@@ -51,35 +59,71 @@ export default class Route {
     return method
   }
 
+  getMessages() {
+    const { messages, } = this.getInfo()
+    return messages
+  }
+
+  getInfo() {
+    const name = this.getName()
+    const host = this.getHost()
+    const path = this.getPath()
+    const method = this.getMethod()
+    const timeout = this.getTimeout()
+    const url = this.getUrl()
+    const info = {
+      name,
+      host,
+      path,
+      method,
+      timeout,
+      url,
+    }
+    return info
+  }
+
   /* setters */
   setTimeout(timeout) {
-    if (!(timeout > 0)) {
-      throw 'Please enter a valid timeout value'
-    }
     const _state = _privates.get(this)
-    const _newState = {
-      ..._state,
-      timeout,
-    }
-    _privates.set(this, _newState)
+    _state.timeout = timeout
+    _privates.set(this, _state)
+  }
+
+  [setPath](path) {
+    const _state = _privates.get(this)
+    _state.path = path
+    _privates.set(this, _state)
+  }
+
+  setHost(host) {
+    if (!host) throw 'Please set correct host address'
+
+    const _state = _privates.get(this)
+    let _host = host
+    if (_host[_host.length - 1] === '/')
+      _host = _host.slice(-1)
+
+    _state.host = _host
+    _privates.set(this, _state)
   }
 
   setErrorMessages(messages) {
     const _state = _privates.get(this)
-    const _newState = {
-      ..._state,
-      messages,
-    }
-    _privates.set(this, _newState)
+    _state.messages = messages
+    _privates.set(this, _state)
   }
 
   /* other methods */
-  addRoute(options) {
-    if (!options.name) throw 'Please specify route name.'
+  [addRoute]() {
     const _state = _privates.get(this)
-    const newRoute = new Route(options)
-    _state.routes[options.name] = newRoute
-    _privates.set(this, _state)
-    return _state.routes[options.name]
+    const { routes, } = _state
+    const routeNames = Object.keys(routes)
+    _state.routeNames = routeNames
+    routeNames.forEach((routeName) => {
+      this[routeName] = new Route({
+        name: routeName,
+        routes: routes[routeName],
+      })
+    })
   }
 }

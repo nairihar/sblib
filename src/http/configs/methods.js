@@ -1,6 +1,4 @@
-export default {
-  POST: Symbol('POST'),
-  GET: Symbol('GET'),
-  DELETE: Symbol('DELETE'),
-  PUT: Symbol('PUT'),
-}
+export const POST = Symbol('POST')
+export const GET = Symbol('GET')
+export const DELETE = Symbol('DELETE')
+export const PUT = Symbol('PUT')

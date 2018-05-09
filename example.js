@@ -1,6 +1,7 @@
-import HttpRoute, { POST, GET, DELETE, } from 'sdk-builder/http'
+import Route, { POST, GET, } from 'sdk-builder/http'
 
 const routes = {
+  default: '/',
   sigin: '/signin',
   signup: '/signup',
   user: {
@@ -12,7 +13,7 @@ const routes = {
     },
   },
 }
-const api = new HttpRoute({
+const api = new Route({
   name: 'api',
   routes,
 })
@@ -29,17 +30,6 @@ api.setErrorMessages({
   timeout: 'Looks like the server is taking to long to respond, please try again in sometime',
 })
 api.enableLogs()
-
-api.user.addRoute({
-  name: 'get',
-  path: '/',
-  method: GET,
-})
-api.user.addRoute({
-  name: 'delete',
-  path: '/',
-  method: DELETE,
-})
 
 async function action() {
   await api.user.get.fetch({}) // GET:: /user/
