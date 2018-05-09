@@ -1,9 +1,23 @@
-import HttpRoute, { methods, } from 'sdk-builder/http'
+import HttpRoute, { POST, GET, DELETE, } from 'sdk-builder/http'
 
+const routes = {
+  sigin: '/signin',
+  signup: '/signup',
+  user: {
+    default: '/user',
+    getAll: {
+      default: '/all',
+      getAll: POST,
+      getById: GET,
+    },
+  },
+}
 const api = new HttpRoute({
   name: 'api',
-  path: '/',
+  routes,
 })
+
+// default options
 api.setHost('http://localhost:3000')
 api.setTimeout(5000)
 api.setErrorMessages({
@@ -16,20 +30,15 @@ api.setErrorMessages({
 })
 api.enableLogs()
 
-api.addRoute({
-  name: 'user',
-  path: '/user',
-})
-
 api.user.addRoute({
   name: 'get',
   path: '/',
-  method: methods.GET,
+  method: GET,
 })
 api.user.addRoute({
   name: 'delete',
   path: '/',
-  method: methods.DELETE,
+  method: DELETE,
 })
 
 async function action() {

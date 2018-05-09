@@ -10,6 +10,7 @@ export default class HttpRoute extends Route {
       info: {
         name: options.name,
         host: options.host,
+        routes: {},
       },
     }
     _privates.set(this, _state)
