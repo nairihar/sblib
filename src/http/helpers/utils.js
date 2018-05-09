@@ -9,3 +9,8 @@ export const isRequestMethod = (method) => {
   })
   return isMethod
 }
+
+export const isNotEmptyString = (value) => {
+  if (typeof value !== 'string' || !value.trim()) return false
+  return true
+}

@@ -1,4 +1,5 @@
 import { defaults, methods, } from '../configs'
+import { isNotEmptyString, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
@@ -6,13 +7,14 @@ const setPath = Symbol('setPath')
 
 export default class Route {
   constructor({ name, routes, }) {
+    if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
     const _state = {
       name,
-      host: null,
+      host: defaults.host,
       method: methods.POST,
       rotueNames: [],
       timeout: defaults.timeout,
-      messages: {},
+      messages: defaults.messages,
     }
     if (routes instanceof String) {
       _state.routes = {}
@@ -21,10 +23,10 @@ export default class Route {
       _state.routes = routes
       _state.path = routes.defaults || defaults.path
     } else {
-      throw 'Pleae specify correct route address'
+      throw 'Pleae specify correct routes'
     }
-    this[addRoute]()
     _privates.set(this, _state)
+    this[addRoute]()
   }
 
   /* getters */
@@ -35,6 +37,7 @@ export default class Route {
 
   getUrl() {
     const { host, path, } = _privates.get(this)
+    if (!host) return null
     const url = `${host}${path}`
     return url
   }
@@ -55,12 +58,12 @@ export default class Route {
   }
 
   getMethod() {
-    const { method, } = this.getInfo()
+    const { method, } = _privates.get(this)
     return method
   }
 
   getMessages() {
-    const { messages, } = this.getInfo()
+    const { messages, } = _privates.get(this)
     return messages
   }
 
