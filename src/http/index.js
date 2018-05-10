@@ -1,5 +1,5 @@
-import Route from './route'
+import HttpRoute from './route'
 
 export * from './configs/methods'
 
-export default Route
+export default HttpRoute

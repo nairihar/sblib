@@ -1,7 +1,7 @@
 {
-  "name": "bsdk",
+  "name": "sblib",
   "version": "1.0.0",
-  "description": "SDK builder for front-end development",
+  "description": "Helps to build SDK which will support Http calls, Sockets, validatons and etc...",
   "main": "index.js",
   "scripts": {
     "build": "babel src --out-dir dist",
@@ -13,10 +13,16 @@
     "url": "git+https://github.com/nairihar/bsdk.git"
   },
   "author": "Nairi Harutyunyan",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/nairihar/bsdk/issues"
   },
+  "keywords": [
+    "javascript",
+    "sdk",
+    "front-end",
+    "sdk-builder"
+  ],
   "homepage": "https://github.com/nairihar/bsdk#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
