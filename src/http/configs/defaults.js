@@ -3,4 +3,7 @@ export default {
   host: null,
   path: '/',
   messages: {},
+  headers: {
+    'Content-Type' : 'application/json',
+  },
 }

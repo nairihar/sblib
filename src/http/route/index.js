@@ -15,6 +15,7 @@ export default class Route {
       rotueNames: [],
       timeout: defaults.timeout,
       messages: defaults.messages,
+      headers: defaults.headers,
     }
     if (routes instanceof String) {
       _state.routes = {}
@@ -67,6 +68,11 @@ export default class Route {
     return messages
   }
 
+  getHeaders() {
+    const { headers, } = _privates.get(this)
+    return headers
+  }
+
   getInfo() {
     const name = this.getName()
     const host = this.getHost()
@@ -74,6 +80,8 @@ export default class Route {
     const method = this.getMethod()
     const timeout = this.getTimeout()
     const url = this.getUrl()
+    const messages = this.getMessages()
+    const headers = this.getHeaders()
     const info = {
       name,
       host,
@@ -81,6 +89,8 @@ export default class Route {
       method,
       timeout,
       url,
+      messages,
+      headers,
     }
     return info
   }
@@ -110,9 +120,15 @@ export default class Route {
     _privates.set(this, _state)
   }
 
-  setErrorMessages(messages) {
+  setMessages(messages) {
     const _state = _privates.get(this)
     _state.messages = messages
+    _privates.set(this, _state)
+  }
+
+  setHeaders(headers) {
+    const _state = _privates.get(this)
+    _state.headers = headers
     _privates.set(this, _state)
   }
 
