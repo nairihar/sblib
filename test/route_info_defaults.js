@@ -11,8 +11,8 @@ describe('Route info defauls', () => {
       name,
       routes: {},
     })
-    it('getHost should return null', () => {
-      assert.equal(api.getHost(), null)
+    it('getAddress should return null', () => {
+      assert.equal(api.getAddress(), null)
     })
     it('getUrl should return null', () => {
       assert.equal(api.getUrl(), null)
@@ -38,7 +38,7 @@ describe('Route info defauls', () => {
     it('getInfo should return all default ingo', () => {
       const info = {
         name: 'api',
-        host: defaults.host,
+        address: defaults.address,
         path: defaults.path,
         method: methods.POST,
         timeout: defaults.timeout,

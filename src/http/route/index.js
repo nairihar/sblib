@@ -1,5 +1,5 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, } from '../helpers'
+import { isNotEmptyString, isRequestMethod, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
@@ -10,7 +10,7 @@ export default class Route {
     if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
     const _state = {
       name,
-      host: defaults.host,
+      address: defaults.address,
       method: methods.POST,
       rotueNames: [],
       timeout: defaults.timeout,
@@ -31,15 +31,15 @@ export default class Route {
   }
 
   /* getters */
-  getHost() {
-    const { host, } = _privates.get(this)
-    return host
+  getAddress() {
+    const { address, } = _privates.get(this)
+    return address
   }
 
   getUrl() {
-    const { host, path, } = _privates.get(this)
-    if (!host) return null
-    const url = `${host}${path}`
+    const { address, path, } = _privates.get(this)
+    if (!address) return null
+    const url = `${address}${path}`
     return url
   }
 
@@ -75,7 +75,7 @@ export default class Route {
 
   getInfo() {
     const name = this.getName()
-    const host = this.getHost()
+    const address = this.getAddress()
     const path = this.getPath()
     const method = this.getMethod()
     const timeout = this.getTimeout()
@@ -84,7 +84,7 @@ export default class Route {
     const headers = this.getHeaders()
     const info = {
       name,
-      host,
+      address,
       path,
       method,
       timeout,
@@ -108,15 +108,22 @@ export default class Route {
     _privates.set(this, _state)
   }
 
-  setHost(host) {
-    if (!host) throw 'Please set correct host address'
+  setAddress(address) {
+    if (!address) throw 'Please set correct address'
 
     const _state = _privates.get(this)
-    let _host = host
-    if (_host[_host.length - 1] === '/')
-      _host = _host.slice(-1)
+    let _address = address
+    if (_address[_address.length - 1] === '/')
+      _address = _address.slice(-1)
 
-    _state.host = _host
+    _state.address = _address
+    _privates.set(this, _state)
+  }
+
+  setMethod(method) {
+    if (!isRequestMethod(method)) throw 'Method is not valid'
+    const _state = _privates.get(this)
+    _state.method = method
     _privates.set(this, _state)
   }
 

@@ -22,7 +22,7 @@ const api = new Route({
   routes,
 })
 
-api.setHost('http://localhost:3000')
+api.setAddress('http://localhost:3000')
 api.setTimeout(5000)
 api.setErrorMessages({
   // errors for specific status codes

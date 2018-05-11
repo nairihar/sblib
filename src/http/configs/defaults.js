@@ -1,6 +1,6 @@
 export default {
   timeout: 5000,
-  host: null,
+  address: null,
   path: '/',
   messages: {},
   headers: {
