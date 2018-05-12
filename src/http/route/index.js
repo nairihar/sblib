@@ -1,5 +1,5 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, isRequestMethod, } from '../helpers'
+import { isNotEmptyString, isRequestMethod, isObject, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
@@ -7,6 +7,7 @@ const setPath = Symbol('setPath')
 
 export default class Route {
   constructor({ name, routes, }) {
+    // TODO :: address
     if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
     const _state = {
       name,
@@ -17,10 +18,10 @@ export default class Route {
       messages: defaults.messages,
       headers: defaults.headers,
     }
-    if (routes instanceof String) {
+    if (isNotEmptyString(routes)) {
       _state.routes = {}
       _state.path = routes
-    } else if (routes instanceof Object) {
+    } else if (isObject(routes)) {
       _state.routes = routes
       _state.path = routes.defaults || defaults.path
     } else {
@@ -114,7 +115,7 @@ export default class Route {
     const _state = _privates.get(this)
     let _address = address
     if (_address[_address.length - 1] === '/')
-      _address = _address.slice(-1)
+      _address = _address.slice(0, -1)
 
     _state.address = _address
     _privates.set(this, _state)

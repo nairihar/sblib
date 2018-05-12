@@ -14,3 +14,7 @@ export const isNotEmptyString = (value) => {
   if (typeof value !== 'string' || !value.trim()) return false
   return true
 }
+
+export const isObject = (value) => {
+  return (value instanceof Object)
+}
