@@ -4,7 +4,7 @@
   "description": "Helps to build SDK which will support Http calls, Sockets, validatons and etc...",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build:es5": "babel src --out-dir es5",
     "lint": "eslint src",
     "test": "mocha --compilers js:babel-core/register"
   },
