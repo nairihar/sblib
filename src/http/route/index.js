@@ -4,6 +4,7 @@ import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, } f
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
 const setPath = Symbol('setPath')
+const syncRoutes = Symbol('syncRoutes')
 
 export default class Route {
   constructor({ name, address, routes, }) {
@@ -14,7 +15,7 @@ export default class Route {
       name,
       address: slicedAddress,
       method: methods.POST,
-      rotueNames: [],
+      routeNames: [],
       timeout: defaults.timeout,
       messages: defaults.messages,
       headers: defaults.headers,
@@ -102,6 +103,7 @@ export default class Route {
     const _state = _privates.get(this)
     _state.timeout = timeout
     _privates.set(this, _state)
+    this[syncRoutes]('setTimeout', timeout)
   }
 
   [setPath](path) {
@@ -116,6 +118,7 @@ export default class Route {
     const _address = removeLastSlashSymbol(address)
     _state.address = _address
     _privates.set(this, _state)
+    this[syncRoutes]('setAddress', address)
   }
 
   setMethod(method) {
@@ -123,18 +126,21 @@ export default class Route {
     const _state = _privates.get(this)
     _state.method = method
     _privates.set(this, _state)
+    this[syncRoutes]('setMethod', method)
   }
 
   setMessages(messages) {
     const _state = _privates.get(this)
     _state.messages = messages
     _privates.set(this, _state)
+    this[syncRoutes]('setMessages', messages)
   }
 
   setHeaders(headers) {
     const _state = _privates.get(this)
     _state.headers = headers
     _privates.set(this, _state)
+    this[syncRoutes]('setHeaders', headers)
   }
 
   /* other methods */
@@ -149,6 +155,13 @@ export default class Route {
         address: _state.address,
         routes: routes[routeName],
       })
+    })
+  }
+
+  [syncRoutes](method, value) {
+    const { routeNames, } = _privates.get(this)
+    routeNames.forEach((routeName) => {
+      this[routeName][method](value)
     })
   }
 }
