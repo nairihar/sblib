@@ -7,7 +7,7 @@
     "build:es5": "babel src --out-dir es5",
     "lint": "eslint src",
     "test": "mocha --compilers js:babel-core/register",
-    "test:coverage": "nyc --check-coverage npm test || true"
+    "test:coverage": "nyc --check-coverage npm test"
   },
   "repository": {
     "type": "git",
