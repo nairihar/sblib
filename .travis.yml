@@ -8,6 +8,6 @@ install:
   - npm install
 script:
   - npm run lint
-  - nyc npm test
+  - npm test
 after_success:
   - nyc report --reporter=text-lcov | npx coveralls
