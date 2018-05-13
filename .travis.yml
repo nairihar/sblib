@@ -8,6 +8,5 @@ install:
   - npm install
 script:
   - npm run lint
-  - npm test
-after_success:
   - npm run test:coverage && nyc report --reporter=text-lcov | npx coveralls
+
