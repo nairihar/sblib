@@ -1,7 +1,7 @@
 import 'babel-polyfill'
 import assert from 'assert'
 
-import { isRequestMethod, isNotEmptyString, isObject, } from '../src/http/helpers'
+import { isRequestMethod, isNotEmptyString, isObject, removeLastSlashSymbol, } from '../src/http/helpers'
 import { methods, } from '../src/http/configs'
 
 describe('Utils methods', () => {
@@ -41,6 +41,13 @@ describe('Utils methods', () => {
       assert.equal(isObject(null), false)
       assert.equal(isObject(21), false)
       assert.equal(isObject(''), false)
+    })
+  })
+
+  describe('Check removeLastSlashSymbol', () => {
+    it('should return one sliced string and one not sliced', () => {
+      assert.equal(removeLastSlashSymbol('text/'), 'text')
+      assert.equal(removeLastSlashSymbol('text'), 'text')
     })
   })
 })

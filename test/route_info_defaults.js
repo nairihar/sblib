@@ -7,15 +7,18 @@ import { defaults, methods, } from '../src/http/configs'
 describe('Route info defauls', () => {
   describe('checking default values for simple info methods', () => {
     const name = 'api'
+    const address = 'http://localhost:3000/'
+    const slicedAddress = 'http://localhost:3000'
     const api = new Route({
       name,
+      address,
       routes: {},
     })
-    it('getAddress should return null', () => {
-      assert.equal(api.getAddress(), null)
+    it('getAddress should return value of varibale address', () => {
+      assert.equal(api.getAddress(), slicedAddress)
     })
-    it('getUrl should return null', () => {
-      assert.equal(api.getUrl(), null)
+    it('getUrl should return address', () => {
+      assert.equal(api.getUrl(), address)
     })
     it('getUrl should return "/"', () => {
       assert.equal(api.getPath(), defaults.path)
@@ -35,14 +38,14 @@ describe('Route info defauls', () => {
     it('getHeaders should return headers default object', () => {
       assert.deepEqual(api.getHeaders(), defaults.headers)
     })
-    it('getInfo should return all default ingo', () => {
+    it('getInfo should return all default info', () => {
       const info = {
         name: 'api',
-        address: defaults.address,
+        address: slicedAddress,
         path: defaults.path,
         method: methods.POST,
         timeout: defaults.timeout,
-        url: null,
+        url: address,
         messages: defaults.messages,
         headers: defaults.headers,
       }

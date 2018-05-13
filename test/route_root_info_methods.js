@@ -8,10 +8,11 @@ describe('Route root route info after set data', () => {
   describe('checking values for setting data', () => {
     const name = 'api'
     const address = 'http://localhost:3000'
+    const newAddress = 'http://localhost:3001'
     const timeout = 7999
     const method = methods.DELETE
     const path = '/'
-    const url = `${address}${path}`
+    const url = `${newAddress}${path}`
     const messages = {
       500: 'Bad Request!!',
     }
@@ -19,16 +20,17 @@ describe('Route root route info after set data', () => {
       test: 'test',
     }
     const api = new Route({
+      address,
       name,
       routes: {},
     })
     api.setTimeout(timeout)
-    api.setAddress(address)
+    api.setAddress(newAddress)
     api.setMethod(method)
     api.setMessages(messages)
     api.setHeaders(headers)
     it('getAddress should return value of address variable', () => {
-      assert.equal(api.getAddress(), address)
+      assert.equal(api.getAddress(), newAddress)
     })
     it('getUrl should return value of url variable', () => {
       assert.equal(api.getUrl(), url)
@@ -48,10 +50,10 @@ describe('Route root route info after set data', () => {
     it('getHeaders should return value of headers object', () => {
       assert.deepEqual(api.getHeaders(), headers)
     })
-    it('getInfo should return all default ingo', () => {
+    it('getInfo should return all info', () => {
       const info = {
         name: 'api',
-        address,
+        address: newAddress,
         path,
         method,
         timeout,

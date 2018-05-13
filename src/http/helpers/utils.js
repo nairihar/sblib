@@ -18,3 +18,9 @@ export const isNotEmptyString = (value) => {
 export const isObject = (value) => {
   return (value instanceof Object)
 }
+
+export const removeLastSlashSymbol = (string) => {
+  if (string[string.length - 1] === '/')
+    return string.slice(0, -1)
+  return string
+}

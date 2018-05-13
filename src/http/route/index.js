@@ -1,17 +1,18 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, isRequestMethod, isObject, } from '../helpers'
+import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
 const setPath = Symbol('setPath')
 
 export default class Route {
-  constructor({ name, routes, }) {
-    // TODO :: address
+  constructor({ name, address, routes, }) {
     if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
+    if (!isNotEmptyString(address)) throw 'Pleae specify correct address'
+    const slicedAddress = removeLastSlashSymbol(address)
     const _state = {
       name,
-      address: defaults.address,
+      address: slicedAddress,
       method: methods.POST,
       rotueNames: [],
       timeout: defaults.timeout,
@@ -111,12 +112,8 @@ export default class Route {
 
   setAddress(address) {
     if (!address) throw 'Please set correct address'
-
     const _state = _privates.get(this)
-    let _address = address
-    if (_address[_address.length - 1] === '/')
-      _address = _address.slice(0, -1)
-
+    const _address = removeLastSlashSymbol(address)
     _state.address = _address
     _privates.set(this, _state)
   }
@@ -149,6 +146,7 @@ export default class Route {
     routeNames.forEach((routeName) => {
       this[routeName] = new Route({
         name: routeName,
+        address: _state.address,
         routes: routes[routeName],
       })
     })
