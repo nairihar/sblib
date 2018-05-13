@@ -18,7 +18,7 @@ describe('Route info defauls', () => {
       assert.equal(api.getAddress(), slicedAddress)
     })
     it('getUrl should return address', () => {
-      assert.equal(api.getUrl(), 8)
+      assert.equal(api.getUrl(), slicedAddress)
     })
     it('getUrl should return "/"', () => {
       assert.equal(api.getPath(), defaults.path)
