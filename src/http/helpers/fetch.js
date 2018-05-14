@@ -1,4 +1,4 @@
-import { methods, } from '../configs'
+// import { methods, } from '../configs'
 
 export const queryParams = (params = {}) => {
   const query = Object.keys(params)
