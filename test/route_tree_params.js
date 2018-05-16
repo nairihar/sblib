@@ -12,7 +12,6 @@ describe('check api tree params functionality for rest apis', () => {
     address,
     routes: {
       user: {
-        a: 'asd',
         [Route.main]: '/user',
         week: {
           method: methods.GET,
@@ -28,6 +27,7 @@ describe('check api tree params functionality for rest apis', () => {
     },
   })
   const userAddress = 'http://localhost:666/user'
+  const userJustAddress = 'http://localhost:666'
   const signInAddress = 'http://localhost:666/auth/signIn'
   const userWeekAddress = 'http://localhost:666/user/week'
   it('user route address should be value of userAddress variable', () => {
@@ -38,5 +38,8 @@ describe('check api tree params functionality for rest apis', () => {
   })
   it('user.week route address should be value of userWeekAddress variable', () => {
     assert.equal(api.user.week.getUrl(), userWeekAddress)
+  })
+  it('address of user.week route address should be value of userJustAddress variable', () => {
+    assert.equal(api.user.week.getAddress(), userJustAddress)
   })
 })
