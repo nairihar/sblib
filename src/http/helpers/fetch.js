@@ -1,4 +1,4 @@
-import { methods, } from '../configs'
+// import { methods, } from '../configs'
 
 export const queryParams = (params = {}) => {
   const query = Object.keys(params)
@@ -7,6 +7,7 @@ export const queryParams = (params = {}) => {
   return query
 }
 
+/*
 export const parseOptions = ({ method, headers, url, data, queryData, }) => {
   let parsedUrl = url
   let query, body
@@ -33,3 +34,4 @@ export const parseResponse = async (response) => {
   const data = await response.json()
   return data
 }
+*/
