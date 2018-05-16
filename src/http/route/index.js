@@ -1,5 +1,5 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, } from '../helpers'
+import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, isARoute, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
@@ -7,6 +7,7 @@ const setPath = Symbol('setPath')
 const syncRoutes = Symbol('syncRoutes')
 const clearParams = Symbol('clearParams')
 const parentRouteNameKey = Symbol('parentName')
+const mainRoute = Symbol('mainRoute')
 
 export default class Route {
   constructor(options) {
@@ -33,13 +34,23 @@ export default class Route {
       _state.routes = {}
       _state.path = routes
     } else if (isObject(routes)) {
-      _state.routes = routes
-      _state.path = routes.defaults || defaults.path
+      if (isARoute(routes)) {
+        _state.routes = {}
+        _state.method = routes.method
+        _state.path = routes.path
+      } else {
+        _state.routes = routes
+        _state.path = routes[Route.main] || defaults.path
+      }
     } else {
       throw 'Pleae specify correct routes'
     }
     _privates.set(this, _state)
     this[addRoute]()
+  }
+
+  static get main() {
+    return mainRoute
   }
 
   /* getters */

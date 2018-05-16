@@ -22,7 +22,7 @@ describe('Route from object', () => {
     it('signIn must be instanceof Route', () => {
       assert.equal((api.signIn instanceof Route), true)
     })
-    it('signIn url must be value of signInUrl varibale', () => {
+    it('signIn url must be value of signInUrl variable', () => {
       assert.equal(api.signIn.getUrl(), signInUrl)
     })
   })
