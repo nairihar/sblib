@@ -10,11 +10,14 @@ var _configs = require('../configs');
 
 var _helpers = require('../helpers');
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var _privates = new WeakMap();
 var addRoute = Symbol('addRoute');
 var setPath = Symbol('setPath');
+var syncRoutes = Symbol('syncRoutes');
 
 var Route = function () {
   function Route(_ref) {
@@ -31,10 +34,11 @@ var Route = function () {
       name: name,
       address: slicedAddress,
       method: _configs.methods.POST,
-      rotueNames: [],
+      routeNames: [],
       timeout: _configs.defaults.timeout,
       messages: _configs.defaults.messages,
-      headers: _configs.defaults.headers
+      headers: _configs.defaults.headers,
+      params: []
     };
     if ((0, _helpers.isNotEmptyString)(routes)) {
       _state.routes = {};
@@ -151,6 +155,8 @@ var Route = function () {
       var _state = _privates.get(this);
       _state.timeout = timeout;
       _privates.set(this, _state);
+      this[syncRoutes]('setTimeout', timeout);
+      return this;
     }
   }, {
     key: setPath,
@@ -167,6 +173,8 @@ var Route = function () {
       var _address = (0, _helpers.removeLastSlashSymbol)(address);
       _state.address = _address;
       _privates.set(this, _state);
+      this[syncRoutes]('setAddress', address);
+      return this;
     }
   }, {
     key: 'setMethod',
@@ -175,6 +183,8 @@ var Route = function () {
       var _state = _privates.get(this);
       _state.method = method;
       _privates.set(this, _state);
+      this[syncRoutes]('setMethod', method);
+      return this;
     }
   }, {
     key: 'setMessages',
@@ -182,6 +192,8 @@ var Route = function () {
       var _state = _privates.get(this);
       _state.messages = messages;
       _privates.set(this, _state);
+      this[syncRoutes]('setMessages', messages);
+      return this;
     }
   }, {
     key: 'setHeaders',
@@ -189,6 +201,8 @@ var Route = function () {
       var _state = _privates.get(this);
       _state.headers = headers;
       _privates.set(this, _state);
+      this[syncRoutes]('setHeaders', headers);
+      return this;
     }
 
     /* other methods */
@@ -210,6 +224,38 @@ var Route = function () {
           routes: routes[routeName]
         });
       });
+    }
+  }, {
+    key: syncRoutes,
+    value: function value(method, _value) {
+      var _this2 = this;
+
+      var _privates$get9 = _privates.get(this),
+          routeNames = _privates$get9.routeNames;
+
+      routeNames.forEach(function (routeName) {
+        _this2[routeName][method](_value);
+      });
+    }
+  }, {
+    key: 'param',
+    value: function param() {
+      var _state = _privates.get(this);
+
+      for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+        params[_key] = arguments[_key];
+      }
+
+      _state.params = [].concat(_toConsumableArray(_state.params), params);
+      _privates.set(this, _state);
+    }
+  }, {
+    key: 'fetch',
+    value: function fetch() {
+      var _state = _privates.get(this);
+      // TODO :: do request
+      _state.params = [];
+      _privates.set(this, _state);
     }
   }]);
 

@@ -3,9 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.parseResponse = exports.parseOptions = exports.queryParams = undefined;
-
-var _configs = require('../configs');
+// import { methods, } from '../configs'
 
 var queryParams = exports.queryParams = function queryParams() {
   var params = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -16,36 +14,31 @@ var queryParams = exports.queryParams = function queryParams() {
   return query;
 };
 
-var parseOptions = exports.parseOptions = function parseOptions(_ref) {
-  var method = _ref.method,
-      headers = _ref.headers,
-      url = _ref.url,
-      data = _ref.data,
-      queryData = _ref.queryData;
+/*
+export const parseOptions = ({ method, headers, url, data, queryData, }) => {
+  let parsedUrl = url
+  let query, body
 
-  var parsedUrl = url;
-  var query = void 0,
-      body = void 0;
-
-  if (method === _configs.methods.GET) {
-    query = queryParams(queryData);
-    parsedUrl += '?' + query;
+  if (method === methods.GET) {
+    query = queryParams(queryData)
+    parsedUrl += `?${query}`
   } else {
-    body = JSON.stringify(data);
+    body = JSON.stringify(data)
   }
-  var options = {
-    parsedUrl: parsedUrl,
+  const options = {
+    parsedUrl,
     requestOptions: {
-      method: method,
-      body: body,
-      headers: headers
-    }
-  };
-  return options;
-};
+      method,
+      body,
+      headers,
+    },
+  }
+  return options
+}
 
-var parseResponse = exports.parseResponse = async function parseResponse(response) {
+export const parseResponse = async (response) => {
   // TODO :: add error message handling and status codes
-  var data = await response.json();
-  return data;
-};
+  const data = await response.json()
+  return data
+}
+*/
