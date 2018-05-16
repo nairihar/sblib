@@ -6,7 +6,8 @@
   "scripts": {
     "build:es5": "babel src --out-dir es5",
     "lint": "eslint src",
-    "test": "nyc mocha --compilers js:babel-core/register"
+    "test": "nyc mocha  --require babel-core/register",
+    "coverage": "nyc report --reporter=text-lcov | npx coveralls"
   },
   "repository": {
     "type": "git",

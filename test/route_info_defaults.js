@@ -2,6 +2,7 @@ import 'babel-polyfill'
 import assert from 'assert'
 
 import Route from '../src/http'
+import { isSymbol, } from '../src/http/helpers'
 import { defaults, methods, } from '../src/http/configs'
 
 describe('Route info defauls', () => {
@@ -14,14 +15,20 @@ describe('Route info defauls', () => {
       address,
       routes: {},
     })
-    it('getAddress should return value of varibale address', () => {
+    it('Route.main should be symbol', () => {
+      assert.equal(isSymbol(Route.main), true)
+    })
+    it('getAddress should return value of variable address', () => {
       assert.equal(api.getAddress(), slicedAddress)
     })
-    it('getUrl should return address', () => {
-      assert.equal(api.getUrl(), address)
+    it('getUrl should return slicedAddress', () => {
+      assert.equal(api.getUrl(), slicedAddress)
     })
-    it('getUrl should return "/"', () => {
+    it('getPath should return ""', () => {
       assert.equal(api.getPath(), defaults.path)
+    })
+    it('getFullPath should return same path', () => {
+      assert.equal(api.getFullPath(), defaults.path)
     })
     it('getName should return Route name', () => {
       assert.equal(api.getName(), name)
@@ -45,7 +52,7 @@ describe('Route info defauls', () => {
         path: defaults.path,
         method: methods.POST,
         timeout: defaults.timeout,
-        url: address,
+        url: slicedAddress,
         messages: defaults.messages,
         headers: defaults.headers,
       }

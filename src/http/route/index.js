@@ -1,19 +1,19 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, } from '../helpers'
+import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, isARoute, } from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
 const setPath = Symbol('setPath')
 const syncRoutes = Symbol('syncRoutes')
+const clearParams = Symbol('clearParams')
+const parentRouteNameKey = Symbol('parentName')
+const mainRoute = Symbol('mainRoute')
 
 export default class Route {
-  constructor({ name, address, routes, }) {
-    if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
-    if (!isNotEmptyString(address)) throw 'Pleae specify correct address'
-    const slicedAddress = removeLastSlashSymbol(address)
-    const _state = {
+  constructor(options) {
+    const { name, address, routes, } = options
+    let _state = {
       name,
-      address: slicedAddress,
       method: methods.POST,
       routeNames: [],
       timeout: defaults.timeout,
@@ -21,17 +21,36 @@ export default class Route {
       headers: defaults.headers,
       params: [],
     }
+    if (!options[parentRouteNameKey]) {
+      if (!isNotEmptyString(name)) throw 'Pleae specify correct name'
+      if (!isNotEmptyString(address)) throw 'Pleae specify correct address'
+      const addresWithoutLastSlash = removeLastSlashSymbol(address)
+      _state.address = addresWithoutLastSlash
+    } else {
+      _state.parentRoute = options[parentRouteNameKey]
+    }
+
     if (isNotEmptyString(routes)) {
       _state.routes = {}
       _state.path = routes
     } else if (isObject(routes)) {
-      _state.routes = routes
-      _state.path = routes.defaults || defaults.path
+      if (isARoute(routes)) {
+        _state.routes = {}
+        _state.method = routes.method
+        _state.path = routes.path
+      } else {
+        _state.routes = routes
+        _state.path = routes[Route.main] || defaults.path
+      }
     } else {
       throw 'Pleae specify correct routes'
     }
     _privates.set(this, _state)
     this[addRoute]()
+  }
+
+  static get main() {
+    return mainRoute
   }
 
   /* getters */
@@ -41,14 +60,28 @@ export default class Route {
   }
 
   getUrl() {
-    const { address, path, } = _privates.get(this)
-    if (!address) return null
-    const url = `${address}${path}`
+    const { parentRoute, address, } = _privates.get(this)
+    let myAddress = address
+    if (!address) {
+      myAddress = parentRoute.getUrl()
+    }
+    const fullPath = this.getFullPath()
+    const url = `${myAddress}${fullPath}`
     return url
   }
 
   getPath() {
     const { path, } = _privates.get(this)
+    return path
+  }
+
+  getFullPath() {
+    const { path, params, } = _privates.get(this)
+    const parasPath = params.join('/')
+    if (parasPath) {
+      this[clearParams]()
+      return `${path}/${parasPath}`
+    }
     return path
   }
 
@@ -149,6 +182,13 @@ export default class Route {
     return this
   }
 
+  params(...params) {
+    const _state = _privates.get(this)
+    _state.params = params
+    _privates.set(this, _state)
+    return this
+  }
+
   /* other methods */
   [addRoute]() {
     const _state = _privates.get(this)
@@ -158,8 +198,8 @@ export default class Route {
     routeNames.forEach((routeName) => {
       this[routeName] = new Route({
         name: routeName,
-        address: _state.address,
         routes: routes[routeName],
+        [parentRouteNameKey]: this,
       })
     })
   }
@@ -171,16 +211,17 @@ export default class Route {
     })
   }
 
-  param(...params) {
+  [clearParams]() {
     const _state = _privates.get(this)
-    _state.params = [..._state.params, ...params,]
+    _state.params = []
     _privates.set(this, _state)
+    if (_state.parentRoute) {
+      _state.parentRoute[clearParams]()
+    }
   }
 
   fetch() {
-    const _state = _privates.get(this)
+    this[clearParams]()
     // TODO :: do request
-    _state.params = []
-    _privates.set(this, _state)
   }
 }

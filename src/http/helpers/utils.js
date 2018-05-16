@@ -24,3 +24,17 @@ export const removeLastSlashSymbol = (string) => {
     return string.slice(0, -1)
   return string
 }
+
+export const isSymbol = (value) => {
+  if (typeof value === 'symbol') {
+    return true
+  }
+  return false
+}
+
+export const isARoute = (route) => {
+  if ('path' in route && 'method' in route && isSymbol(route.method)) {
+    return true
+  }
+  return false
+}
