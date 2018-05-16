@@ -226,6 +226,5 @@ export default class Route {
 
   fetch() {
     this[clearParams]()
-    // TODO :: do request
   }
 }
