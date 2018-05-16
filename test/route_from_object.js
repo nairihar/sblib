@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import assert from 'assert'
 
 import Route from '../src/http'
-import { methods, } from '../src/http/configs'
+import { methods, defaults, } from '../src/http/configs'
 
 describe('Route from object', () => {
   const name = 'api'
@@ -52,5 +52,37 @@ describe('Route from object', () => {
       api.setHeaders(newHeaders)
       assert.equal(api.signIn.getHeaders(), newHeaders)
     })
+  })
+})
+
+describe('check api and signIn params functionality for rest apis', () => {
+  const name = 'rest-api'
+  const address = 'http://localhost:99999/'
+  const restApi = new Route({
+    name,
+    address,
+    routes: {
+      signIn: '/signInAccount',
+    },
+  })
+  it('getUrl should return fullPath, test 1', () => {
+    const fullPath = 'http://localhost:99999/99/tt/signInAccount/77'
+    const fullPathFromSdk = restApi.params(99, 'tt').signIn.params(77).getUrl()
+    assert.equal(fullPathFromSdk, fullPath)
+  })
+  it('getUrl should return fullPath, test 2', () => {
+    const fullPath = 'http://localhost:99999/signInAccount/11'
+    const fullPathFromSdk = restApi.signIn.params(11).getUrl()
+    assert.equal(fullPathFromSdk, fullPath)
+  })
+  it('getUrl should return urlWithoutParams, test 3', () => {
+    const urlWithoutParams = 'http://localhost:99999/signInAccount'
+    const timeout = defaults.timeout
+
+    const signInTimeout = restApi.signIn.params(11).getTimeout()
+    assert.equal(signInTimeout, timeout)
+    restApi.signIn.fetch()
+    const url = restApi.signIn.getUrl()
+    assert.equal(url, urlWithoutParams)
   })
 })

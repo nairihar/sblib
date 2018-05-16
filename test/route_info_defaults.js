@@ -17,11 +17,14 @@ describe('Route info defauls', () => {
     it('getAddress should return value of varibale address', () => {
       assert.equal(api.getAddress(), slicedAddress)
     })
-    it('getUrl should return address', () => {
-      assert.equal(api.getUrl(), address)
+    it('getUrl should return slicedAddress', () => {
+      assert.equal(api.getUrl(), slicedAddress)
     })
-    it('getUrl should return "/"', () => {
+    it('getPath should return ""', () => {
       assert.equal(api.getPath(), defaults.path)
+    })
+    it('getFullPath should return same path', () => {
+      assert.equal(api.getFullPath(), defaults.path)
     })
     it('getName should return Route name', () => {
       assert.equal(api.getName(), name)
@@ -45,7 +48,7 @@ describe('Route info defauls', () => {
         path: defaults.path,
         method: methods.POST,
         timeout: defaults.timeout,
-        url: address,
+        url: slicedAddress,
         messages: defaults.messages,
         headers: defaults.headers,
       }

@@ -11,8 +11,7 @@ describe('Route root route info after set data', () => {
     const newAddress = 'http://localhost:3001'
     const timeout = 7999
     const method = methods.DELETE
-    const path = '/'
-    const url = `${newAddress}${path}`
+    const url = `${newAddress}${defaults.path}`
     const messages = {
       500: 'Bad Request!!',
     }
@@ -54,10 +53,10 @@ describe('Route root route info after set data', () => {
       const info = {
         name: 'api',
         address: newAddress,
-        path,
+        path: defaults.path,
         method,
         timeout,
-        url,
+        url: newAddress,
         messages,
         headers,
       }
