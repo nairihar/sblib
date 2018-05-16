@@ -19,6 +19,7 @@ export default class Route {
       timeout: defaults.timeout,
       messages: defaults.messages,
       headers: defaults.headers,
+      params: [],
     }
     if (isNotEmptyString(routes)) {
       _state.routes = {}
@@ -104,6 +105,7 @@ export default class Route {
     _state.timeout = timeout
     _privates.set(this, _state)
     this[syncRoutes]('setTimeout', timeout)
+    return this
   }
 
   [setPath](path) {
@@ -119,6 +121,7 @@ export default class Route {
     _state.address = _address
     _privates.set(this, _state)
     this[syncRoutes]('setAddress', address)
+    return this
   }
 
   setMethod(method) {
@@ -127,6 +130,7 @@ export default class Route {
     _state.method = method
     _privates.set(this, _state)
     this[syncRoutes]('setMethod', method)
+    return this
   }
 
   setMessages(messages) {
@@ -134,6 +138,7 @@ export default class Route {
     _state.messages = messages
     _privates.set(this, _state)
     this[syncRoutes]('setMessages', messages)
+    return this
   }
 
   setHeaders(headers) {
@@ -141,6 +146,7 @@ export default class Route {
     _state.headers = headers
     _privates.set(this, _state)
     this[syncRoutes]('setHeaders', headers)
+    return this
   }
 
   /* other methods */
@@ -163,5 +169,18 @@ export default class Route {
     routeNames.forEach((routeName) => {
       this[routeName][method](value)
     })
+  }
+
+  param(...params) {
+    const _state = _privates.get(this)
+    _state.params = [..._state.params, ...params,]
+    _privates.set(this, _state)
+  }
+
+  fetch() {
+    const _state = _privates.get(this)
+    // TODO :: do request
+    _state.params = []
+    _privates.set(this, _state)
   }
 }
