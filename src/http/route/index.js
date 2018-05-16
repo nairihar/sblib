@@ -55,16 +55,16 @@ export default class Route {
 
   /* getters */
   getAddress() {
-    const { address, } = _privates.get(this)
-    return address
-  }
-
-  getUrl() {
-    const { parentRoute, address, } = _privates.get(this)
-    let myAddress = address
+    const { address, parentRoute, } = _privates.get(this)
+    let myAddress = null
     if (!address) {
       myAddress = parentRoute.getUrl()
     }
+    return myAddress
+  }
+
+  getUrl() {
+    let myAddress = this.getAddress()
     const fullPath = this.getFullPath()
     const url = `${myAddress}${fullPath}`
     return url
