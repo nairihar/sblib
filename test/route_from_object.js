@@ -81,7 +81,8 @@ describe('check api and signIn params functionality for rest apis', () => {
 
     const signInTimeout = restApi.signIn.params(11).getTimeout()
     assert.equal(signInTimeout, timeout)
-    restApi.signIn.fetch()
+    // TODO :: finalise timeout
+    restApi.signIn.fetch({})
     const url = restApi.signIn.getUrl()
     assert.equal(url, urlWithoutParams)
   })

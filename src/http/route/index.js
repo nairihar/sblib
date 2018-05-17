@@ -1,5 +1,8 @@
 import { defaults, methods, } from '../configs'
-import { isNotEmptyString, isRequestMethod, isObject, removeLastSlashSymbol, isARoute, } from '../helpers'
+import {
+  isNotEmptyString, isRequestMethod, isObject,
+  removeLastSlashSymbol, isARoute, fetchAsync,
+} from '../helpers'
 
 const _privates = new WeakMap()
 const addRoute = Symbol('addRoute')
@@ -224,7 +227,22 @@ export default class Route {
     }
   }
 
-  fetch() {
+  fetch(data) {
+    const timeout = this.getTimeout()
+    const messages = this.getMessages()
+    const url = this.getUrl()
+    const headers = this.getHeaders()
+    const method = this.getMethod()
+
     this[clearParams]()
+    return fetchAsync({
+      method,
+      url,
+      headers,
+      data,
+    }, {
+      timeout,
+      messages,
+    })
   }
 }

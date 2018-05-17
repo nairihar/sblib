@@ -1,7 +1,9 @@
 export default {
   timeout: 5000,
   path: '',
-  messages: {},
+  messages: {
+    timeout: 'Timeout Error!',
+  },
   headers: {
     'Content-Type' : 'application/json',
   },
