@@ -5,7 +5,7 @@ import { isRequestMethod, isNotEmptyString, isObject, removeLastSlashSymbol, isS
 import { methods, defaults, } from '../src/http/configs'
 
 describe('Utils methods', () => {
-  describe('Check isRequestMethod', () => {
+  describe('check isRequestMethod', () => {
     it('should return true when the value is request method type', () => {
       assert.equal(isRequestMethod(methods.GET), true)
       assert.equal(isRequestMethod(methods.POST), true)
