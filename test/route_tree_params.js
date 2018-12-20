@@ -34,7 +34,7 @@ describe('check api tree params functionality for rest apis', () => {
     assert.equal(api.user.getUrl(), userAddress)
   })
   it('signin route address should be value of signInAddress variable', () => {
-    assert.equal(api.auth.signIn.getUrl(), signInAddress)
+    assert.equal(api.auth.signIn.getUrl(), 0)
   })
   it('user.week route address should be value of userWeekAddress variable', () => {
     assert.equal(api.user.week.getUrl(), userWeekAddress)
